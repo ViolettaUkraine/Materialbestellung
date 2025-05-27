@@ -8,13 +8,20 @@ function login($pdo, $username, $password) {
     $stmt->execute([$username]);
     $user = $stmt->fetch();
 
-    if ($user && password_verify($password, $user['password_hash'])) {
+    if (!$user) {
+        echo "<p style='color:red'>⚠ Benutzer nicht gefunden!</p>";
+        return false;
+    }
+
+    if (password_verify($password, $user['password_hash'])) {
         $_SESSION['user'] = [
             'id' => $user['id'],
             'username' => $user['username'],
             'role' => $user['role'] ?? 'user'
         ];
         return true;
+    } else {
+        echo "<p style='color:red'>⚠ Passwort stimmt nicht!</p>";
     }
     return false;
 }
