@@ -3,22 +3,32 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-function login($username, $password) {
-    global $db;
-    $stmt = $db->prepare("SELECT * FROM users WHERE username = ?");
+function login($pdo, $username, $password) {
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password_hash'])) {
-        // Nur benötigte Daten in die Session legen
         $_SESSION['user'] = [
             'id' => $user['id'],
             'username' => $user['username'],
-            'role' => $user['role'] ?? 'user' // Fallback: 'user', falls leer
+            'role' => $user['role'] ?? 'user'
         ];
         return true;
     }
     return false;
+}
+function register($pdo, $username, $password, $role) {
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->execute([$username]);
+    if ($stmt->fetch()) {
+        return "Benutzername existiert bereits!";
+    }
+
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    $stmt = $pdo->prepare("INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)");
+    return $stmt->execute([$username, $hashedPassword, $role]) ? true : "Registrierung fehlgeschlagen!";
 }
 
 function require_login() {
@@ -47,27 +57,5 @@ function is_moderator() {
 
 function is_user() {
     return isset($_SESSION['user']) && $_SESSION['user']['role'] === 'user';
-}
-?>
-<?php function register($username, $password, $role) {
-    global $pdo; 
-
-    // Überprüfen, ob Benutzer bereits existiert
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
-    $stmt->execute([$username]);
-    if ($stmt->fetch()) {
-        return "Benutzername existiert bereits!";
-    }
-
-    // Passwort hashen
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-    // In DB einfügen
-    $stmt = $pdo->prepare("INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)");
-    if ($stmt->execute([$username, $hashedPassword, $role])) {
-        return true;
-    } else {
-        return "Registrierung fehlgeschlagen!";
-    }
 }
 ?>

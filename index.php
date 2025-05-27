@@ -42,17 +42,17 @@ require_once 'includes/db.php';
 require_once 'includes/auth.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $action = $_POST['action']; // Diese Zeile fehlte bei dir!
+    $action = $_POST['action'];
 
     if ($action === "login") {
-        if (login($_POST['username'], $_POST['password'])) {
+        if (login($pdo, $_POST['username'], $_POST['password'])) {
             header("Location: dashboard.php");
             exit;
         } else {
             $error = "Login fehlgeschlagen!";
         }
     } elseif ($action === "register") {
-        $result = register($_POST['username'], $_POST['password'], $_POST['role']);
+        $result = register($pdo, $_POST['username'], $_POST['password'], $_POST['role']);
         if ($result === true) {
             $success = "Registrierung erfolgreich! Du kannst dich jetzt einloggen.";
         } else {
@@ -60,8 +60,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
-
 ?>
+
 
 
 </body>
