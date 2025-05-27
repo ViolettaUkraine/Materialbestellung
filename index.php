@@ -11,7 +11,7 @@
 <body>
 
 <div class="background-container">
-  <img src="css/bild33.avif" alt="Bild" class="background-image">
+  <img src="css/R.jfif" alt="Bild" class="background-image">
 </div>
 
 <div class="login-container">
@@ -20,10 +20,11 @@
     <input name="username" placeholder="Benutzername" required>
     <input name="password" type="password" placeholder="Passwort" required>
     <div id="roleSelect" style="display:none;">
-        <select name="role">
-        <option value="Besteller">Besteller</option>
-        <option value="Geschäftsstelle">Geschäftsstelle</option>
-        <option value="Admin">Admin</option>
+        <select name="role" required>
+        <option value="">Bitte Rolle wählen</option>
+        <option value="besteller">Besteller</option>
+        <option value="bearbeiter">Geschäftsstelle</option>
+        <option value="admin">Admin</option>
       </select>
     </div>
     <input type="hidden" name="action" id="formAction" value="login">
@@ -35,21 +36,33 @@
     <?php if (isset($success)) echo "<p class='success'>$success</p>"; ?>
   </form>
 </div>
-
+<script src="java1.js"></script>
 <?php
 require_once 'includes/db.php';
 require_once 'includes/auth.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (login($_POST['username'], $_POST['password'])) {
-        header("Location: dashboard.php");
-        exit;
-    } else {
-        $error = "Login fehlgeschlagen!";
+    $action = $_POST['action']; // Diese Zeile fehlte bei dir!
+
+    if ($action === "login") {
+        if (login($_POST['username'], $_POST['password'])) {
+            header("Location: dashboard.php");
+            exit;
+        } else {
+            $error = "Login fehlgeschlagen!";
+        }
+    } elseif ($action === "register") {
+        $result = register($_POST['username'], $_POST['password'], $_POST['role']);
+        if ($result === true) {
+            $success = "Registrierung erfolgreich! Du kannst dich jetzt einloggen.";
+        } else {
+            $error = $result;
+        }
     }
 }
+
 ?>
-<script src="java1.js"></script>
+
 
 </body>
 </html>

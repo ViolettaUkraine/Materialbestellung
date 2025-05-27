@@ -1,6 +1,10 @@
-body {
+html, body {
       font-family: 'Caveat', cursive;
-    }
+      margin: 0;
+      
+      
+}
+    
 .background-container {
   position: fixed;
   inset: 0;
@@ -17,9 +21,9 @@ body {
 }
 
     .login-container {
+      
       display: flex;
-      justify-content: flex-start;
-      padding: 550px; 
+      justify-content: center; 
       align-items: center;
       height: 100vh;
     }

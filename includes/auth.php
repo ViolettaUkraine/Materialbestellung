@@ -49,3 +49,25 @@ function is_user() {
     return isset($_SESSION['user']) && $_SESSION['user']['role'] === 'user';
 }
 ?>
+<?php function register($username, $password, $role) {
+    global $pdo; 
+
+    // Überprüfen, ob Benutzer bereits existiert
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->execute([$username]);
+    if ($stmt->fetch()) {
+        return "Benutzername existiert bereits!";
+    }
+
+    // Passwort hashen
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    // In DB einfügen
+    $stmt = $pdo->prepare("INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)");
+    if ($stmt->execute([$username, $hashedPassword, $role])) {
+        return true;
+    } else {
+        return "Registrierung fehlgeschlagen!";
+    }
+}
+?>
