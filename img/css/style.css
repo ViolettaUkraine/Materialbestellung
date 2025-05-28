@@ -1,0 +1,11 @@
+body {
+    font-family: sans-serif;
+    margin: 2rem;
+}
+form {
+    margin-bottom: 2rem;
+}
+input, select, button {
+    display: block;
+    margin-top: 1rem;
+}
