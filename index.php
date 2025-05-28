@@ -6,6 +6,7 @@ require_once 'includes/auth.php'; // login() Funktion
 $error = '';
 $success = '';
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($_POST['action'] === 'login') {
         if (login($_POST['username'], $_POST['password'])) {
