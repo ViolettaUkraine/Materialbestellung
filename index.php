@@ -7,37 +7,52 @@ require_once 'includes/db.php';
 require_once 'includes/auth.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    //echo "<pre>";
-    //print_r($_POST);
-    //echo "</pre>";
-
-    $action = $_POST['action'] ?? '';
-
-    echo "<pre>DEBUG:\n";
-    echo "Aktion: $action\n";
-    echo "Benutzername: " . $_POST['username'] . "\n";
-    echo "Passwort: " . $_POST['password'] . "\n";
-    echo "Rolle: " . ($_POST['role'] ?? '---') . "\n";
-    echo "</pre>";
-
-    if ($action === "login") {
-        $success = login($pdo, $_POST['username'], $_POST['password']);
-        if ($success) {
-            echo "<p style='color:green;'>✅ Login erfolgreich! Weiterleitung ...</p>";
-            header("Location: dashboard.php");
+    if ($_POST['action'] === 'login') {
+        if (login($_POST['username'], $_POST['password'])) {
+            $role = strtolower($_SESSION['user']['role']);
+            switch ($role) {
+                case 'admin':
+                    header("Location: admin.php");
+                    break;
+                case 'bearbeiter':
+                case 'geschäftsstelle':
+                    header("Location: bestellungen.php");
+                    break;
+                case 'besteller':
+                    header("Location: bestellen.php");
+                    break;
+                default:
+                    header("Location: dashboard.php");
+                    break;
+            }
             exit;
         } else {
-            $error = "❌ Login fehlgeschlagen – falscher Benutzername oder Passwort?";
+            $error = "Login fehlgeschlagen. Bitte überprüfe deine Zugangsdaten.";
         }
-    } elseif ($action === "register") {
-        $result = register($pdo, $_POST['username'], $_POST['password'], $_POST['role'] ?? '');
-        if ($result === true) {
-            $success = "✅ Registrierung erfolgreich!";
+    } elseif ($_POST['action'] === 'register') {
+        $username = $_POST['username'];
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $firstname = $_POST['firstname'];
+        $lastname = $_POST['lastname'];
+        $address = $_POST['address'];
+        $city = $_POST['city'];
+        $phone = $_POST['phone'];
+        $email = $_POST['email'];
+        $role = 'besteller';
+
+        // Prüfen ob Benutzername bereits existiert
+        $check = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+        $check->execute([$username]);
+        if ($check->rowCount() > 0) {
+            $error = "Benutzername ist bereits vergeben.";
         } else {
-            $error = "❌ Registrierung fehlgeschlagen: $result";
+            $stmt = $pdo->prepare("INSERT INTO users (username, password, firstname, lastname, address, city, phone, email, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            if ($stmt->execute([$username, $password, $firstname, $lastname, $address, $city, $phone, $email, $role])) {
+                $success = "Registrierung erfolgreich. Du kannst dich jetzt einloggen.";
+            } else {
+                $error = "Registrierung fehlgeschlagen. Bitte versuche es erneut.";
+            }
         }
-    } else {
-        $error = "❌ Unbekannte Aktion: $action";
     }
 }
 ?>
@@ -59,7 +74,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <h2 id="formTitle">Login</h2>
     <input name="username" placeholder="Benutzername" required />
     <input name="password" type="password" placeholder="Passwort" required />
-    <div id="roleSelect" style="display:none;">
+
+     <div id="registrationFields" style="display: none;">
+      <input name="firstname" placeholder="Vorname" />
+      <input name="lastname" placeholder="Nachname" />
+      <input name="address" placeholder="Adresse" />
+      <input name="city" placeholder="PLZ Ort" />
+      <input name="phone" placeholder="Telefonnummer" />
+      <input name="email" type="email" placeholder="E-Mail-Adresse" autocomplete="email" />
+    </div>
+   <div id="roleSelect" style="display:none;">
       <select name="role">
        <option value="">Bitte Rolle wählen</option> 
         <option value="besteller">Besteller</option>
@@ -76,6 +100,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
   <?php if (isset($success)) echo "<p class='success'>$success</p>"; ?>
 </div>
+
+<footer class="footer">
+  <a href="impressum.php">Impressum</a>
+  <a href="agb.php">AGB</a>
+</footer>
+
 
 <script src="java1.js"></script>
 </body>

@@ -1,5 +1,5 @@
 <?php
-session_start(); // Wichtig für Warenkorb
+session_start();
 require_once 'includes/db.php';
 require_once 'includes/auth.php';
 require_login();
@@ -26,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         foreach ($_POST['product_ids'] as $materialId) {
             $quantity = (int) ($_POST['quantities'][$materialId] ?? 0);
             if ($quantity > 0) {
-                // Datenbank-Bestellung
                 $db->prepare("INSERT INTO orders (user_id, material_id, quantity, status, created_at)
                               VALUES (?, ?, ?, 'offen', NOW())")
                    ->execute([$userId, $materialId, $quantity]);
@@ -34,42 +33,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $db->prepare("UPDATE materials SET stock = stock - ? WHERE id = ? AND stock >= ?")
                    ->execute([$quantity, $materialId, $quantity]);
 
-                // In den Session-Warenkorb legen
                 if (!isset($_SESSION['cart'])) {
                     $_SESSION['cart'] = [];
                 }
-                if (isset($_SESSION['cart'][$materialId])) {
-                    $_SESSION['cart'][$materialId] += $quantity;
-                } else {
-                    $_SESSION['cart'][$materialId] = $quantity;
-                }
+                $_SESSION['cart'][$materialId] = ($_SESSION['cart'][$materialId] ?? 0) + $quantity;
             }
         }
-        $successMessage = "✅ Bestellung erfolgreich gespeichert & zum Warenkorb hinzugefügt!";
+
+        header("Location: bestellungen.php");
+        exit;
     } else {
         $errorMessage = "⚠️ Keine Produkte ausgewählt.";
     }
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Materialshop</title>
+    <title>Materialshop – BüroDirekt24</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .card-img-top { height: 180px; object-fit: cover; }
         .warenkorb { position: sticky; top: 20px; }
+        .sticky-header {
+            position: fixed;
+            top: 0;
+            left: 0;           /* wichtig, damit es ganz links beginnt */
+            width: 100%;       /* volle Breite */
+            z-index: 1030;
+            background-color: #343a40;
+            color: white;
+            padding: 0.75rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
     </style>
 </head>
-<body class="bg-light">
+<body class="bg-light" style="padding-top: 100px;">
 
-<div class="container py-5">
-    <h1 class="mb-4">📦 Büro-Materialshop</h1>
+<!-- 📦 BüroDirekt24 Logo-Leiste -->
+<header class="sticky-header">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="h4 mb-0 fw-bold" style="letter-spacing: 1px;">📦 BüroDirekt<span style="color: #ffc107;">24</span></h1>
+            <small class="d-block text-white fst-italic" style="font-size: 0.9rem;">Ihr Partner für Bürobedarf – schnell, einfach, direkt.</small>
+        </div>
+        <form method="post" action="logout.php" class="m-0">
+            <button type="submit" class="btn btn-outline-light btn-sm">🚪 Abmelden</button>
+        </form>
+    </div>
+</header>
 
-    <!-- Suche -->
+
+<div class="container py-4">
+    <h2 class="mb-0">🛍️ Materialshop</h2>
+    <div class="alert alert-info mt-4" role="alert">
+        💬 <strong>Hinweis zur Bestelländerung oder Stornierung:</strong><br>
+        Sollten Sie Änderungen an Ihrer Bestellung wünschen oder diese stornieren wollen, hilft Ihnen unser Kundenservice gerne weiter.<br>
+        Sie erreichen uns <strong>kostenlos unter der Service-Hotline 0800 12345</strong> – wir sind werktags von 8:00 bis 18:00 Uhr für Sie da.
+    </div>
+
+    <!-- 🔍 Suche -->
     <form method="get" class="mb-4">
         <div class="input-group">
             <input type="text" name="search" class="form-control" placeholder="🔍 Suche nach Name oder Beschreibung" value="<?= htmlspecialchars($searchTerm) ?>">
@@ -77,9 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </form>
 
-    <?php if (!empty($successMessage)): ?>
-        <div class="alert alert-success"><?= $successMessage ?></div>
-    <?php elseif (!empty($errorMessage)): ?>
+    <?php if (!empty($errorMessage)): ?>
         <div class="alert alert-warning"><?= $errorMessage ?></div>
     <?php endif; ?>
 
@@ -120,11 +144,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="col-md-3 warenkorb">
                 <div class="card">
                     <a href="warenkorb.php" class="card-header bg-primary text-white text-decoration-none d-block">🛒 Warenkorb anzeigen</a>
-
                     <ul class="list-group list-group-flush" id="cartItems"></ul>
                     <div class="card-body">
                         <p class="fw-bold">Gesamt: <span id="cartTotal">0,00 €</span></p>
-                        <button type="submit" class="btn btn-success w-100">✅ Bestellung absenden</button>
+                        <button type="submit" class="btn btn-success w-100 mb-2">✅ Bestellung absenden</button>
+                        <a href="bestellungen.php" class="btn btn-primary w-100">📄 Meine Bestellungen anzeigen</a>
                     </div>
                 </div>
             </div>
@@ -164,7 +188,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         el.addEventListener('change', updateCart);
     });
 
-    updateCart(); // Initial beim Laden
+    updateCart();
 </script>
 
 </body>

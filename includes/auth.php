@@ -3,8 +3,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-function login($pdo, $username, $password) {
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+function login( $username, $password) {
+    global $db;
+    $stmt = $db->prepare("SELECT * FROM users WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch();
 
