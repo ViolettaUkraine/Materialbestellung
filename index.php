@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <input name="password" type="password" placeholder="Passwort" required />
     <div id="roleSelect" style="display:none;">
       <select name="role">
-        <option value="">Bitte Rolle wählen</option>
+       <option value="">Bitte Rolle wählen</option> 
         <option value="besteller">Besteller</option>
         <option value="bearbeiter">Geschäftsstelle</option>
         <option value="admin">Admin</option>
