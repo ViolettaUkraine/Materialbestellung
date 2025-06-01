@@ -3,31 +3,29 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-function login( $username, $password) {
+function login($username, $password) {
     global $db;
     $stmt = $db->prepare("SELECT * FROM users WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch();
 
     if (!$user) {
-        echo "<p style='color:red'>⚠ Benutzer nicht gefunden!</p>";
         return false;
     }
 
-    if (password_verify($password, $user['password_hash'])) {
+   if (password_verify($password, $user['password_hash'])) {
         $_SESSION['user'] = [
             'id' => $user['id'],
             'username' => $user['username'],
             'role' => $user['role'] ?? 'user'
         ];
         return true;
-    } else {
-        echo "<p style='color:red'>⚠ Passwort stimmt nicht!</p>";
     }
+
     return false;
 }
-function register($pdo, $username, $password, $role) {
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+function register($db, $username, $password, $role) {
+    $stmt = $db->prepare("SELECT * FROM users WHERE username = ?");
     $stmt->execute([$username]);
     if ($stmt->fetch()) {
         return "Benutzername existiert bereits!";
@@ -35,7 +33,7 @@ function register($pdo, $username, $password, $role) {
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    $stmt = $pdo->prepare("INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)");
+    $stmt = $db->prepare("INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)");
     return $stmt->execute([$username, $hashedPassword, $role]) ? true : "Registrierung fehlgeschlagen!";
 }
 

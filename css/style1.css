@@ -1,10 +1,9 @@
 html, body {
-      font-family: 'Caveat', cursive;
-      margin: 0;
-      
-      
+  font-family: 'Caveat', cursive;
+  margin: 0;
+  padding: 0;
 }
-    
+
 .background-container {
   position: fixed;
   inset: 0;
@@ -20,57 +19,92 @@ html, body {
   object-fit: cover;
 }
 
-    .login-container {
-      
-      display: flex;
-      justify-content: center; 
-      align-items: center;
-      height: 100vh;
-    }
+.login-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 320px;
+  max-width: 90%;
+}
 
-    .login-form {
-      
-      padding: 60px;
-      border-radius: 10px;
-      width: 300px;
-      text-align: center;
-    }
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
 
-    .login-form input, .login-form select {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
+.login-form input,
+.login-form select,
+.login-form button {
+  margin-bottom: 12px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
 
-    .login-form button {
-      padding: 10px;
-      width: 100%;
-      background-color: #14e942;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+.login-form select {
+  background-color: #fff;
+}
 
-    .toggle-link {
-      margin-top: 10px;
-      cursor: pointer;
-      color: #0077cc;
-      text-decoration: underline;
-    }
+.login-form button {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+  border: none;
+  transition: background-color 0.3s ease;
+}
 
-    .error {
-      color: red;
-    }
+.login-form button:hover {
+  background-color: #45a049;
+}
 
-    .success {
-      color: green;
-    }
+.toggle-link {
+  text-align: center;
+  color: #007BFF;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 14px;
+}
 
+.toggle-link:hover {
+  color: #0056b3;
+}
 
+.error {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.success {
+  color: green;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 14px;
+}
+
+.footer a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #555;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
 /* CSS von Herrn Kurt */
 
 /*
