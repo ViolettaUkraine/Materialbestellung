@@ -66,35 +66,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" href="css/style1.css" />
 </head>
 <body>
-
 <div class="background-container">
   <img src="css/R.jfif" alt="Hintergrundbild" class="background-image" />
 </div>
 
-<div class="login-container">
-  <form method="post" class="login-form" id="mainForm">
-    <h2 id="formTitle">Login</h2>
+<div class="login-box">
+  <div class="login-left">
+    <form method="post" class="login-form" id="mainForm">
+      <h2 id="formTitle">Willkommen!</h2>
 
-    <input name="username" placeholder="Benutzername" required autocomplete="username" />
-    <input name="password" type="password" placeholder="Passwort" required autocomplete="current-password" />
+      <input name="username" placeholder="Benutzername" required />
+      <input name="password" type="password" placeholder="Passwort" required />
 
-    <div id="registrationFields" style="display: none;">
-      <input name="firstname" placeholder="Vorname" />
-      <input name="lastname" placeholder="Nachname" />
-      <input name="address" placeholder="Adresse" />
-      <input name="city" placeholder="PLZ Ort" />
-      <input name="phone" placeholder="Telefonnummer" />
-      <input name="email" type="email" placeholder="E-Mail-Adresse" autocomplete="email" />
-    </div>
+      <div id="registrationFields" style="display: none;">
+        <input name="firstname" placeholder="Vorname" />
+        <input name="lastname" placeholder="Nachname" />
+        <input name="address" placeholder="Adresse" />
+        <input name="city" placeholder="PLZ Ort" />
+        <input name="phone" placeholder="Telefonnummer" />
+        <input name="email" type="email" placeholder="E-Mail-Adresse" />
+      </div>
 
-    <input type="hidden" name="action" id="formAction" value="login" />
-    <button type="submit">Absenden</button>
+      <input type="hidden" name="action" id="formAction" value="login" />
+      <button type="submit">Anmelden</button>
 
-    <p class="toggle-link" onclick="toggleForm()">Noch kein Konto? Jetzt registrieren</p>
+      <p class="toggle-link" onclick="toggleForm()">Noch kein Konto? Jetzt registrieren</p>
 
-    <?php if (!empty($error)) echo "<p class='error'>$error</p>"; ?>
-    <?php if (!empty($success)) echo "<p class='success'>$success</p>"; ?>
-  </form>
+      <?php if (!empty($error)) echo "<p class='error'>$error</p>"; ?>
+      <?php if (!empty($success)) echo "<p class='success'>$success</p>"; ?>
+    </form>
+  </div>
+
+  <div class="login-right">
+    <img src="css/105.jpg" alt="Login Bild" />
+  </div>
 </div>
 
 <footer class="footer">
