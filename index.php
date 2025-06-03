@@ -64,11 +64,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta charset="UTF-8" />
   <title>Login & Registrierung</title>
   <link rel="stylesheet" href="css/style1.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
 </head>
-<body>
-<div class="background-container">
-  <img src="css/R.jfif" alt="Hintergrundbild" class="background-image" />
-</div>
+<body class="body">
+
+<header class="sticky-header">
+  <div class="container d-flex justify-content-between align-items-center">
+    <div>
+      <h1 class="h4 mb-0 fw-bold">📦 BüroDirekt<span style="color: #ffc107;">24</span></h1>
+      <small class="d-block fst-italic" style="font-size: 0.9rem;">Ihr Partner für Bürobedarf – schnell, einfach, direkt.</small>
+    </div>
+    <?php if (isset($_SESSION['user'])): ?>
+      <form method="post" action="logout.php" class="m-0">
+        <button type="submit" class="btn btn-outline-light btn-sm">🚪 Abmelden</button>
+      </form>
+    <?php endif; ?>
+  </div>
+</header>
 
 <div class="login-box">
   <div class="login-left">
