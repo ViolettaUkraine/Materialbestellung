@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $city       = trim($_POST['city']);
         $phone      = trim($_POST['phone']);
         $email      = trim($_POST['email']);
-        $role       = 'besteller';
+        
 
         // Prüfen ob Benutzername bereits existiert
         $check = $db->prepare("SELECT * FROM users WHERE username = ?");
@@ -86,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="login-box">
   <div class="login-left">
     <form method="post" class="login-form" id="mainForm">
-      <h2 id="formTitle">Willkommen!</h2>
+      <h2 id="formTitle">Herzlich willkommen! <p>Login Sie sich ein:</p> </h2>
 
       <input name="username" placeholder="Benutzername" required />
       <input name="password" type="password" placeholder="Passwort" required />
@@ -98,6 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input name="city" placeholder="PLZ Ort" />
         <input name="phone" placeholder="Telefonnummer" />
         <input name="email" type="email" placeholder="E-Mail-Adresse" />
+
       </div>
 
       <input type="hidden" name="action" id="formAction" value="login" />
