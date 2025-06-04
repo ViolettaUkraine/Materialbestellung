@@ -196,6 +196,9 @@ foreach ($orders as $order) {
         <?php if ($_SESSION['user']['role'] === 'admin' || $_SESSION['user']['role'] === 'bearbeiter'): ?>
             <a href="material_hinzufügen.php" class="btn btn-outline-secondary">Material hinzufügen</a>
         <?php endif; ?>
+        <form>
+            <input type="button" value=" drucken " onClick="javascript:window.print()">
+        </form>
     </div>
 
 </div>
