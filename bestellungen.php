@@ -192,7 +192,7 @@ foreach ($orders as $order) {
 
     <div class="action-links mt-4 d-flex gap-2">
         <a href="bestellen.php" class="btn btn-secondary">← Zurück zum Shop</a>
-        <a href="logout.php" class="btn btn-outline-secondary">Abmelden</a>
+        <a href="material_hinzufügen.php" class="btn btn-outline-secondary">Material hinzufügen</a>
     </div>
 
 </div>

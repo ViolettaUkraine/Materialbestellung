@@ -45,25 +45,22 @@ function require_login() {
 }
 
 // Nur bestimmte Rolle zulassen
-function require_role($role) {
+function require_role($roles) {
     require_login();
+ /*   
+    $userrole = $_SESSION['user']['role'];
+    if ($userrole !== 'bearbeiter' OR $userrole !== 'admin'){
+        die("⛔ Zugriff verweigert");
+    }
+
+    var_dump($_SESSION['user']['role']);
+/*
     if ($_SESSION['user']['role'] !== $role) {
         die("⛔ Zugriff verweigert – nur für {$role}.");
     }
-}
-/* Helferfunktionen zur Rollenprüfung
-function is_admin() {
-    return isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin';
-}
-
-function is_moderator() {
-    return isset($_SESSION['user']) && $_SESSION['user']['role'] === 'moderator';
-}
-
-function is_user() {
-    return isset($_SESSION['user']) && $_SESSION['user']['role'] === 'user';
-}
-
 */
+
+}
+
 ?>
 
