@@ -192,7 +192,10 @@ foreach ($orders as $order) {
 
     <div class="action-links mt-4 d-flex gap-2">
         <a href="bestellen.php" class="btn btn-secondary">← Zurück zum Shop</a>
-        <a href="material_hinzufügen.php" class="btn btn-outline-secondary">Material hinzufügen</a>
+        
+        <?php if ($_SESSION['user']['role'] === 'admin' || $_SESSION['user']['role'] === 'bearbeiter'): ?>
+            <a href="material_hinzufügen.php" class="btn btn-outline-secondary">Material hinzufügen</a>
+        <?php endif; ?>
     </div>
 
 </div>
