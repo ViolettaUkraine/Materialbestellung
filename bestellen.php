@@ -143,12 +143,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- 🛒 Warenkorb -->
             <div class="col-md-3 warenkorb">
                 <div class="card">
-                    <a href="warenkorb.php" class="card-header bg-primary text-white text-decoration-none d-block">🛒 Warenkorb anzeigen</a>
+                    <a href="bestellungen.php" class="card-header bg-primary text-white text-decoration-none d-block">🛒 Warenkorb anzeigen</a>
                     <ul class="list-group list-group-flush" id="cartItems"></ul>
                     <div class="card-body">
                         <p class="fw-bold">Gesamt: <span id="cartTotal">0,00 €</span></p>
                         <button type="submit" class="btn btn-success w-100 mb-2">✅ Bestellung absenden</button>
-                        <a href="bestellungen.php" class="btn btn-primary w-100">📄 Meine Bestellungen anzeigen</a>
                     </div>
                 </div>
             </div>
