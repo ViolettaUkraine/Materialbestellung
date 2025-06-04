@@ -16,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     header("Location: admin.php");
                     break;
                 case 'bearbeiter':
-                case 'geschäftsstelle':
                     header("Location: bestellungen.php");
                     break;
                 case 'besteller':
@@ -72,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <header class="sticky-header">
   <div class="container d-flex justify-content-between align-items-center">
     <div>
-      <h1 class="h4 mb-0 fw-bold">📦 BüroDirekt<span style="color: #ffc107;">24</span></h1>
+      <h1 class="h4 mb-0 fw-bold">📦 <span style="color: #ffc107;">BFW</span>-Materialmanager</h1>
       <small class="d-block fst-italic" style="font-size: 0.9rem;">Ihr Partner für Bürobedarf – schnell, einfach, direkt.</small>
     </div>
     <?php if (isset($_SESSION['user'])): ?>

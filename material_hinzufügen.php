@@ -69,7 +69,7 @@ $materials = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <header class="sticky-header">
     <div class="container d-flex justify-content-between align-items-center">
         <div>
-            <h1 class="h4 mb-0 fw-bold">📦 BüroDirekt<span style="color: #ffc107;">24</span></h1>
+            <h1 class="h4 mb-0 fw-bold">📦 <span style="color: #ffc107;">BFW</span>-Materialmanager</h1>
             <small class="d-block text-white fst-italic">Material hinzufügen & verwalten</small>
         </div>
         <form method="post" action="logout.php" class="m-0">

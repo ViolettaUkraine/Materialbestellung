@@ -100,7 +100,7 @@ foreach ($orders as $order) {
 <header class="sticky-header">
     <div class="container d-flex justify-content-between align-items-center">
         <div>
-            <h1 class="h4 mb-0 fw-bold" style="letter-spacing: 1px;">📦 BüroDirekt<span style="color: #ffc107;">24</span></h1>
+            <h1 class="h4 mb-0 fw-bold">📦 <span style="color: #ffc107;">BFW</span>-Materialmanager</h1>
             <small class="d-block text-white fst-italic" style="font-size: 0.9rem;">Ihr Partner für Bürobedarf – schnell, einfach, direkt.</small>
         </div>
         <form method="post" action="logout.php" class="m-0">
@@ -192,7 +192,7 @@ foreach ($orders as $order) {
 
     <div class="action-links mt-4 d-flex gap-2">
         <a href="bestellen.php" class="btn btn-secondary">← Zurück zum Shop</a>
-        
+
         <?php if ($_SESSION['user']['role'] === 'admin' || $_SESSION['user']['role'] === 'bearbeiter'): ?>
             <a href="material_hinzufügen.php" class="btn btn-outline-secondary">Material hinzufügen</a>
         <?php endif; ?>
